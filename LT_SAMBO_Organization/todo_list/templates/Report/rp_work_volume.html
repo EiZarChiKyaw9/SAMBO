@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+
+{% block title %}  {% endblock %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LT SAMBO - Daily work volume report</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</head>
+<body>
+<!--{% url 'report_csv' %}-->
+    <div class="container">
+        <H3><center>Daily Work Volume Report</center> </H3>
+
+
+
+
+        <!--<a href = "javascript:;" onclick = "this.href='{% url 'work_volume_report' %}' document.getElementById('site1').value">Send</a>-->
+        <div class="row mb-3">
+            <form method="post">
+                {% csrf_token %}
+                <br><br>
+
+            <div class="form col-md-3 me-2 mb-3">
+                <div class="col-md-12 mb-3">
+
+                 <select class="form-select mb-3" name="site" aria-label="Default select example"  required>
+                    <option selected>Select Site</option>
+                     {%if site_items %}
+                        {% for things in site_items %}
+                            <option value="{{ things.TX_Site_Name }}">{{ things.TX_Site_Name }}</option>
+                        {% endfor %}
+                    {% endif %}
+                </select>
+                    <button class="btn btn-outline-primary mb-3" type="submit">Search</button>
+                    <button formaction="{% url 'report_csv' %}" class="btn btn-secondary mb-3" type="submit" id="export">Export CSV</button>
+                    <button class="btn btn-secondary mb-3" href="{% url 'home' %}" role="button">Back</button>
+            </div>
+
+            </div>
+                {% if messages %}
+
+                      {% for message in messages %}
+                        <br>
+                        <!-- alert box section start -->
+                         <div class="alert alert-info alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        <!-- alert box section end -->
+                       {% endfor %}
+
+                    {% endif %}
+                </form>
+        </div>
+        </div>
+           <br>
+            <br>
+              <br>
+              {% if wv_rp_items %}
+                <table class="table table-striped secondary border" style="Color:#dcdcdc; line-height:1;">
+                 <thead>
+                   <!--<a href="#" class="btn btn-primary btn-xs pull-right"><b>+</b> Add new categories</a>-->
+                   <tr>
+                   <th><center>Site Name</center></th>
+                   <!--<th>Is_Active</th>-->
+                   <th class="text-center"><center>Panel No</center></th>
+                   <th class="text-center"><center>Zone</center></th>
+                   <th class="text-center"><center>Slab Level</center></th>
+                   <th class="text-center"><center>Work</center></th>
+                   <th class="text-center"><center>Manpower</center></th>
+                   <th class="text-center"><center>S/J</center></th>
+                   <th class="text-center"><center>PU-Kg</center></th>
+                   <th class="text-center"><center>PU-PKR</center></th>
+                   <th class="text-center"><center>L(m)</center></th>
+                   <th class="text-center"><center>W(m)</center></th>
+                   <th class="text-center"><center>H(m)</center></th>
+                   <th class="text-center"><center>Area</center></th>
+                   <th class="text-center"><center>Volume</center></th>
+                   <th class="text-center"><center>Cement</center></th>
+                   <th class="text-center"><center>Rebar-Qty</center></th>
+                   <th class="text-center"><center>Rebar-Length</center></th>
+                   <th class="text-center"><center>Rebar-Size</center></th>
+                   <th class="text-center"><center>Date</center></th>
+                   <th class="text-center"><center>Progress</center></th>
+                   </tr>
+                   </thead>
+
+                  {% for things in wv_rp_items %}
+                    <tr style="Color:#dcdcdc;">
+                    <td>{{ things.ID_WV_Main }}</td>
+
+                    <td>{{ things.TX_Panel_No }}</td>
+                    <td>{{ things.TX_Zone }}</td>
+                    <td>{{ things.CD_Slab_Level }}</td>
+                    <td>{{ things.CD_Work }}</td>
+                    <td>{{ things.TX_Man_Power_Work }}</td>
+                    <td>{{ things.TX_Sur_Joint }}</td>
+                    <td>{{ things.PU_Kg }}</td>
+                    <td>{{ things.PU_PKR }}</td>
+                    <td>{{ things.Volume_L }}</td>
+                    <td>{{ things.Volume_W }}</td>
+                    <td>{{ things.Volume_H }}</td>
+                    <td>{{ things.AREA }}</td>
+                    <td>{{ things.Volume }}</td>
+                    <td>{{ things.Cement }}</td>
+                    <td>{{ things.Rebar_Qty }}</td>
+                    <td>{{ things.Rebar_Length }}</td>
+                    <td>{{ things.Rebar_Size }}</td>
+                    <td>{{ things.created_date |date:'d M Y'}}</td>
+                    <td>{{ things.Progress }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
+                {% endif %}
+        </div>
+        </div>
+</body>
+</html>
+
+{% endblock %}

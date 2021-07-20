@@ -1,0 +1,126 @@
+
+{% extends 'base.html' %}
+
+{% block title %}LTSambo-Site{% endblock %}
+{% load static %}
+
+{% block content %}
+<title>LT Sambo - Site</title>
+<br><br>
+<div class="container">
+
+{% if messages %}
+
+      {% for message in messages %}
+        <br>
+        <!-- alert box section start -->
+         <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <!-- alert box section end -->
+   {% endfor %}
+
+{% endif %}
+<div class="row">
+    <h3 class="panel-title">
+        <span class="english">Site Registration</span>
+    </h3>
+    <form class="col-md-4 col-md-offset-2" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+                <span>Site Name</span>
+                <input class="form-control col-md-6 me-2" type="input" placeholder="Site Name" aria-label="Site_Name" name ="TX_Site_Name" value="{{site_item.TX_Site_Name}}" required><br>
+
+                <label class="form-label">Site Location Image</label>
+                  <input class="form-control form-control-sm mb-3" name="FU_Site_Image" type="file" value="{{site_item.FU_Site_Image}}" accept="image/png, image/gif, image/jpeg">
+
+                {% if site_item.Is_Active == False %}
+                    <div class="col-md-4 mb-3">
+                      <label>Status</label>
+                      <div class="col-sm-12">
+
+                         <select class="form-select" name="Is_Active" aria-label="Default select example" required>
+                            <option value=True >Active</option>
+                             <option value=False selected>Inactive</option>
+                        </select>
+
+                    </div>
+                    </div>
+                {% else %}
+                    <div class="col-md-4 mb-3">
+                      <label>Status</label>
+                      <div class="col-sm-12">
+
+                         <select class="form-select" name="Is_Active" aria-label="Default select example" required>
+                            <option value=True selected>Active</option>
+                             <option value=False >Inactive</option>
+                        </select>
+
+                    </div>
+                    </div>
+                {% endif %}
+
+        {% if site_item %}
+            <div class="d-grid gap-2">
+                <button class="btn btn-outline-primary mb-3" type="submit">Update</button>
+            </div>
+        {% else %}
+            <div class="d-grid gap-2">
+                <button class="btn btn-outline-primary mb-3" type="submit">Submit</button>
+            </div>
+        {% endif %}
+        <center><a class="dropdown-item secondary bg-primary" href="{% url 'site' %}">Cancel</a></center>
+            <div class="d-grid gap-2">
+
+        </div>
+    </form>
+
+    <br>
+
+
+    {%if site_items %}
+
+    <br>
+    <div class="col-md-8 col-md-offset-2 primary md-2">
+        <span> Site Lists</span>
+    <table class="table table-striped secondary border" style="Color:#dcdcdc; line-height:1;">
+    <thead>
+    <!--<a href="#" class="btn btn-primary btn-xs pull-right"><b>+</b> Add new categories</a>-->
+        <tr>
+            <th><center>Site Name</center></th>
+            <th><center>Site Image Location</center></th>
+            <th>Status</th>
+            <th class="text-center"><center>Action</center></th>
+        </tr>
+    </thead>
+      {% for things in site_items %}
+            <tr style="Color:#dcdcdc;">
+
+                <td><center>{{ things.TX_Site_Name }} </center></td>
+                <td><center>{{ things.FU_Site_Image }} </center></td>
+
+                {% if things.Is_Active %}
+                    <td class="custom-control custom-checkbox">
+                        <center><input type="checkbox" class="custom-control-input" checked></center>
+                    </td>
+                {% else %}
+                    <td class="center custom-control custom-checkbox">
+                      <center><input type="checkbox" class="custom-control-input"></center>
+                    </td>
+                {% endif %}
+                <!--<td><center>{{ things.Is_Active }}</center></td>-->
+                <td class="text-center"><a class='btn btn-primary btn-xs' href="{% url 'edit_site' things.id %}"><span class="glyphicon glyphicon-edit"></span> Edit</a>
+                <!--<a href="#" class="btn btn-danger btn-xs"><span class="glyphicon glyphicon-remove"></span> Del</a></td>-->
+
+            </tr>
+        {% endfor %}
+    </table>
+       </div>
+
+
+   {% endif %}
+</div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,1 @@
+web: gunicorn LT_SAMBO_Organization.wsgi --log-file -

@@ -1,0 +1,547 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %} LT Sambo - Submit work volume {% endblock %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LT Sambo - {{ wv_main_item.CD_Site }} Submit daily work volume </title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script>
+    $(document).ready(function(){
+    $('#purpose').on('change', function() {
+        alert(this.value);
+      if ( this.value == 'PU')
+      //.....................^.......
+      {
+        $("#pu").show();
+        $("#lw").show();
+        $("#A").show();
+        $("#H").hide();
+        $("#V").hide();
+        $("#Ce").hide();
+        $("#RSQ").hide();
+        $("#RL").hide();
+      }
+      else if( this.value == 'US')
+      {
+        $("#lw").show();
+        $("#A").show();
+        $("#H").hide();
+        $("#V").hide();
+        $("#Ce").hide();
+        $("#RSQ").hide();
+        $("#RL").hide();
+        $("#pu").hide();
+
+      }
+       else if( this.value == 'BG')
+      {
+        $("#lw").show();
+        $("#A").show();
+        $("#H").show();
+        $("#V").show();
+        $("#Ce").hide();
+        $("#RSQ").hide();
+        $("#RL").hide();
+        $("#pu").hide();
+
+      }
+       else if( this.value == 'PA')
+      {
+        $("#lw").show();
+        $("#A").show();
+        $("#H").show();
+        $("#V").show();
+        $("#Ce").show();
+        $("#RSQ").hide();
+        $("#RL").hide();
+        $("#pu").hide();
+
+      }
+       else if( this.value == 'CG')
+      {
+        $("#lw").show();
+        $("#A").show();
+        $("#H").show();
+        $("#V").show();
+        $("#Ce").show();
+        $("#RSQ").hide();
+        $("#RL").hide();
+        $("#pu").hide();
+
+      }
+      else if( this.value == 'HK')
+      {
+        $("#lw").hide();
+        $("#A").hide();
+        $("#H").hide();
+        $("#V").hide();
+        $("#Ce").hide();
+        $("#RSQ").hide();
+        $("#RL").hide();
+        $("#pu").hide();
+
+      }
+      else if( this.value == 'DL')
+      {
+        $("#lw").hide();
+        $("#A").hide();
+        $("#H").hide();
+        $("#V").hide();
+        $("#Ce").hide();
+        $("#RSQ").show();
+        $("#RL").hide();
+        $("#pu").hide();
+
+      }
+      else if( this.value == 'PR')
+      {
+        $("#lw").hide();
+        $("#A").hide();
+        $("#H").hide();
+        $("#V").hide();
+        $("#Ce").hide();
+        $("#RSQ").show();
+        $("#RL").show();
+        $("#pu").hide();
+
+      }
+      else if( this.value == 'BW')
+      {
+        $("#lw").hide();
+        $("#A").hide();
+        $("#H").hide();
+        $("#V").hide();
+        $("#Ce").show();
+        $("#RSQ").hide();
+        $("#RL").hide();
+        $("#pu").hide();
+      }
+      else if( this.value == 'FW-OPEN')
+      {
+        $("#lw").hide();
+        $("#A").hide();
+        $("#H").hide();
+        $("#V").hide();
+        $("#Ce").hide();
+        $("#RSQ").hide();
+        $("#RL").hide();
+        $("#pu").hide();
+      }
+      else if( this.value == 'FW-CLOSE')
+      {
+        $("#lw").hide();
+        $("#A").hide();
+        $("#H").hide();
+        $("#V").hide();
+        $("#Ce").hide();
+        $("#RSQ").hide();
+        $("#RL").hide();
+        $("#pu").hide();
+      }
+      else if( this.value == 'BC')
+      {
+        $("#lw").hide();
+        $("#A").hide();
+        $("#H").hide();
+        $("#V").hide();
+        $("#Ce").hide();
+        $("#RSQ").show();
+        $("#RL").hide();
+        $("#pu").hide();
+      }
+      else if( this.value == 'PU-C')
+      {
+        $("#lw").hide();
+        $("#A").hide();
+        $("#H").hide();
+        $("#V").hide();
+        $("#Ce").hide();
+        $("#RSQ").hide();
+        $("#RL").hide();
+        $("#pu").hide();
+      }
+      else if( this.value == 'COL-H')
+      {
+        $("#lw").show();
+        $("#A").show();
+        $("#H").show();
+        $("#V").show();
+        $("#Ce").hide();
+        $("#RSQ").hide();
+        $("#RL").hide();
+        $("#pu").hide();
+      }
+       else if( this.value == 'CORING')
+      {
+        $("#lw").hide();
+        $("#A").hide();
+        $("#H").hide();
+        $("#V").hide();
+        $("#Ce").hide();
+        $("#RSQ").hide();
+        $("#RL").hide();
+        $("#pu").hide();
+      }
+      else
+      {
+        $("#lw").hide();
+        $("#A").hide();
+        $("#H").hide();
+        $("#V").hide();
+        $("#Ce").hide();
+        $("#RSQ").hide();
+        $("#RL").hide();
+        $("#pu").hide();
+      }
+    });
+});
+    </script>
+        <script>
+        $(document).ready(function(){
+            $('#v_Width').keyup(calculate);
+            $('#v_Length').keyup(calculate);
+        });
+        function calculate(e)
+        {
+            var num = $('#v_Width').val() * $('#v_Length').val();
+            var n = num.toFixed(2);
+
+            $('#v_Area').val(n) ;
+        }
+    </script>
+    <script>
+            $(document).ready(function(){
+                $('#v_Height').keyup(cal);
+            });
+            function cal(s)
+            {
+               var num = $('#v_Height').val() * $('#v_Area').val();
+               var n2 = num.toFixed(2);
+               $('#v_Volume').val(n2) ;
+            }
+        </script>
+    <script>
+            $(document).ready(function(){
+                $('#Site').textchanged(f);
+            });
+            function getid(f)
+            {
+                $('#main').val($('#v_Height').val());
+            }
+        </script>
+</head>
+<body onload="myFunction()">
+    <script>
+        function myFunction() {
+          $("#lw").hide();
+            $("#A").hide();
+            $("#H").hide();
+            $("#V").hide();
+            $("#Ce").hide();
+            $("#RSQ").hide();
+            $("#RL").hide();
+            $("#pu").hide();
+        }
+    </script>
+    <div class="container">
+        <H3><center>Submit Daily Work Volume Report</center> </H3>
+      <br><br>
+        <div class="row">
+
+          <div class="d-flex col-md-8">
+
+              <div class="container">
+                  {% if messages %}
+
+                      {% for message in messages %}
+                        <br>
+                        <!-- alert box section start -->
+                         <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        <!-- alert box section end -->
+                       {% endfor %}
+
+                    {% endif %}
+                    <form class="d-flex" method="post"  enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row">
+                        <div class="col-md-4 mb-3">
+                          <label>Site Name</label>
+                            <input type="text" class="form-control" placeholder="" id="main" name="ID_WV_Main" value="{{ wv_main_item.CD_Site }}" readonly required>
+                            <!--<p type="text" id="Site" class="form-control" placeholder="" name="ID_WV_Main" required>{{ wv_main_item.CD_Site }}</p>-->
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                          <label>Panel No</label>
+                          <input type="text" class="form-control" placeholder="Panel No" name="TX_Panel_No" required>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                          <label>Zone</label>
+                          <input type="text" class="form-control" placeholder="Zone" name="TX_Zone" required>
+                        </div>
+
+                        <div class="col-md-4 mb-3">
+                      <label>Level</label>
+                        <div class="col-sm-12">
+
+                         <select class="form-select" name="CD_Slab_Level" aria-label="Default select example" id="" required>
+                            <option selected>Select Slab Level</option>
+                             {%if slab_level_items %}
+                                {% for things in slab_level_items %}
+                                    <option value="{{ things.TX_Slab_Level_Name }}">{{ things.TX_Slab_Level_Name }}</option>
+                                {% endfor %}
+                            {% endif %}
+                        </select>
+                    </div>
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label>Types of Defect</label><br>
+                        <div class="form-group row">
+                <div class="col-sm-12">
+
+                         <select id="purpose" class="form-select" name="CD_Work" aria-label="Default select example" required>
+                            <option selected>Select Defect</option>
+                             {%if work_volume_items %}
+                                {% for things in work_volume_items %}
+                                    <option value={{ things.Tx_Name }}>{{ things.Tx_Name }}</option>
+                                {% endfor %}
+                            {% endif %}
+                        </select>
+
+                    </div>
+                </div>
+
+                    </div>
+
+                <div class="col-md-4 mb-3">
+                      <label>Manpower</label>
+                      <input type="text" class="form-control" placeholder="Manpower" name="TX_Man_Power_Work" required>
+                    </div>
+
+                <div class="col-md-4 mb-3">
+                      <label>Surface or Joint</label>
+                      <div class="col-sm-12">
+
+                         <select class="form-select" name="TX_Sur_Joint" aria-label="Default select example" required>
+                            <option selected>Select Surface or Joint</option>
+                                <option value=Surface>Surface</option>
+                             <option value=Joint>Joint</option>
+                        </select>
+
+                    </div>
+                    </div>
+
+                <div class="col-md-4 mb-3">
+                      <label>Progress</label>
+                        <div class="col-sm-12">
+
+                         <select class="form-select" name="Progress" aria-label="Default select example" required>
+                            <option selected>Select Progress</option>
+                            <option value="Temporary stop">TS - Temporary stop</option>
+                             <option value="FOR STATUS">FOR STATUS</option>
+                             <option value="C - Continue">C - Continue</option>
+                             <option value="RS - Restart">RS - Restart</option>
+                             <option value="S - Start">S - Start</option>
+                             <option value="E - End">E - End</option>
+                        </select>
+
+                        </div>
+                    </div>
+
+                <div class="row" id="pu">
+                <div class="col-md-4 mb-3" >
+                      <label>PU Kg</label>
+                      <input type="text" class="form-control" placeholder="PU Kg" name="PU_Kg">
+                    </div>
+
+                <div class="col-md-4 mb-3">
+                      <label>PU PKR</label>
+                      <input type="text" class="form-control" placeholder="PU PKR" name="PU_PKR">
+                    </div>
+
+                </div>
+
+                <div class="row" id="lw">
+                <div class="col-md-4 mb-3">
+                      <label>Length</label>
+                      <input type="text" class="form-control" placeholder="Length" name="Volume_L" id="v_Length">
+                    </div>
+                <div class="col-md-4 mb-3">
+                      <label>Width</label>
+                      <input type="text" class="form-control" placeholder="Width" name="Volume_W" id="v_Width">
+                    </div>
+                </div>
+                <div class="row" id="H">
+                    <div class="col-md-4 mb-3">
+                      <label>Height</label>
+                      <input type="text" class="form-control" placeholder="Height" name="Volume_H" id="v_Height">
+                    </div>
+                </div>
+                 <div class="row" id="A">
+                    <div class="col-md-4 mb-3">
+                      <label>Area</label>
+                      <input type="text" class="form-control" placeholder="Area" name="AREA" id="v_Area">
+                    </div>
+                  </div>
+
+                <div class="row" id="V">
+                    <div class="col-md-4 mb-3">
+                      <label>Volume</label>
+                      <input type="text" class="form-control" placeholder="Volume" name="Volume" id="v_Volume">
+                    </div>
+                </div>
+                <div class="row" id="Ce">
+                    <div class="col-md-4 mb-3">
+                      <label>Cement</label>
+                      <input type="text" class="form-control" placeholder="Cement" name="Cement" >
+                    </div>
+                </div>
+
+
+                <div class="row" id="RSQ">
+
+                     <div class="col-md-4 mb-3">
+                      <label>Rebar Size</label>
+                      <input type="text" class="form-control" placeholder="Rebar Size" name="Rebar_Size" >
+                    </div>
+                    <div class="col-md-4 mb-3">
+                      <label>Rebar Qty</label>
+                      <input type="text" class="form-control" placeholder="Rebar Qty" name="Rebar_Qty" >
+                    </div>
+                </div>
+                    <div class="col-md-4 mb-3" id="RL">
+                      <label>Rebar Length</label>
+                      <input type="text" class="form-control" placeholder="Rebar Length" name="Rebar_Length" id="R-L">
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                      <label>Attachment</label>
+                       <input class="form-control" name="FU_WV_Image" type="file" accept="image/png, image/gif, image/jpeg">
+                    </div>
+                    <input type="hidden" class="form-control" value=True name="Is_Active">
+                    <button class="btn btn-outline-primary" type="submit">Submit</button>
+
+                </div> <!--row -->
+            </form>
+      </div>
+    </div>
+            <div class="col-md-4">
+            <div class="form-inline my-2 my-lg-0">
+            {% csrf_token %}
+                <div class="form-floating mb-3">
+                  <p class="form-control mr-sm-2 card-text form-control" name="ID_WV_Main">{{ wv_main_item.CD_Site }}</p>
+                  <label style="color:red" for="floatingInput">Site Name</label>
+                </div>
+                <div class="form-floating mb-3">
+                  <p class="form-control mr-sm-2 card-text form-control" name="TX_Site_Supervisor">{{ wv_main_item.TX_Site_Supervisor }}</p>
+                  <label style="color:red" for="floatingInput">Site Supervisor</label>
+                </div>
+                <div class="form-floating mb-3">
+                  <p class="form-control mr-sm-2 card-text form-control" name="TX_Site_In_charge_Design">{{ wv_main_item.TX_Site_In_charge_Design }}</p>
+                  <label style="color:red" for="floatingInput">Site In Charge Design</label>
+                </div>
+                <div class="form-floating mb-3">
+                  <p class="form-control mr-sm-2 card-text form-control" name="TX_Site_In_charge_QS">{{ wv_main_item.TX_Site_In_charge_QS }}</p>
+                  <label style="color:red" for="floatingInput">Site In Charge QS</label>
+                </div>
+                <div class="form-floating mb-3">
+                  <p class="form-control mr-sm-2 card-text form-control" name="TX_Site_Manager">{{ wv_main_item.TX_Site_Manager }}</p>
+                  <label style="color:red" for="floatingInput">Site In Charge QS</label>
+                </div>
+                <div class="form-floating mb-3">
+                  <p class="form-control mr-sm-2 card-text form-control" name="TX_Construction_Manager">{{ wv_main_item.TX_Construction_Manager }}</p>
+                  <label style="color:red" for="floatingInput">Site Construction Manager</label>
+                </div>
+
+           <!-- <p class="form-control mr-sm-2"> type="search" placeholder="{{ wv_main_item.CD_Site }}" value="{{ wv_main_item.CD_Site }}"
+                   aria-label="Search" name="wv_main_item"> -->
+              <!--<input type="hidden" value="{{ wv_main_item.Is_Active }}" name="Is_Active">
+            <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Edit </button>-->
+            </div>
+        </div>
+    </div>
+
+
+           <br>
+              <br>
+
+
+              {% if Daily_report_Details_items %}
+                <table class="table table-striped secondary border" style="Color:#dcdcdc; line-height:1;">
+                   <thead>
+                   <!--<a href="#" class="btn btn-primary btn-xs pull-right"><b>+</b> Add new categories</a>-->
+                   <tr>
+                   <th><center>Site Name</center></th>
+                   <!--<th>Is_Active</th>-->
+                   <th class="text-center"><center>Panel No</center></th>
+                   <th class="text-center"><center>Zone</center></th>
+                   <th class="text-center"><center>Slab Level</center></th>
+                   <th class="text-center"><center>Work</center></th>
+                   <th class="text-center"><center>Manpower</center></th>
+                   <th class="text-center"><center>S/J</center></th>
+                   <th class="text-center"><center>PU-Kg</center></th>
+                   <th class="text-center"><center>PU-PKR</center></th>
+                   <th class="text-center"><center>L(m)</center></th>
+                   <th class="text-center"><center>W(m)</center></th>
+                   <th class="text-center"><center>H(m)</center></th>
+                   <th class="text-center"><center>Area</center></th>
+                   <th class="text-center"><center>Volume</center></th>
+                   <th class="text-center"><center>Cement</center></th>
+                   <th class="text-center"><center>Rebar-Qty</center></th>
+                   <th class="text-center"><center>Rebar-Length</center></th>
+                   <th class="text-center"><center>Rebar-Size</center></th>
+                   <th class="text-center"><center>Date</center></th>
+                   <th class="text-center"><center>Progress</center></th>
+                   <th class="text-center"><center>Attachment</center></th>
+                   </tr>
+                   </thead>
+
+                  {% for things in Daily_report_Details_items %}
+                    <tr style="Color:#dcdcdc;">
+                    <td>{{ things.ID_WV_Main }}</td>
+                    <td>{{ things.TX_Panel_No }}</td>
+                    <td>{{ things.TX_Zone }}</td>
+                    <td>{{ things.CD_Slab_Level }}</td>
+                    <td>{{ things.CD_Work }}</td>
+                    <td>{{ things.TX_Man_Power_Work }}</td>
+                    <td>{{ things.TX_Sur_Joint }}</td>
+                    <td>{{ things.PU_Kg }}</td>
+                    <td>{{ things.PU_PKR }}</td>
+                    <td>{{ things.Volume_L }}</td>
+                    <td>{{ things.Volume_W }}</td>
+                    <td>{{ things.Volume_H }}</td>
+                    <td>{{ things.AREA }}</td>
+                    <td>{{ things.Volume }}</td>
+                    <td>{{ things.Cement }}</td>
+                    <td>{{ things.Rebar_Qty }}</td>
+                    <td>{{ things.Rebar_Length }}</td>
+                    <td>{{ things.Rebar_Size }}</td>
+                    <td>{{ things.created_date|date:'d M Y'}}</td>
+                    <td>{{ things.Progress }}</td>
+                    {% if things.FU_WV_Image %}
+                        <td><center><a href="/media/{{ things.FU_WV_Image }}">{{ things.FU_WV_Image }}</a></center></td>
+                    {% else %}
+                        <td><center>No Media</center></td>
+                    {% endif %}
+                    </tr>
+                    {% endfor %}
+                </table>
+                {% endif %}
+        </div>
+        </div>
+</body>
+</html>
+
+{% endblock %}
