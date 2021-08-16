@@ -237,6 +237,19 @@
                 $('#main').val($('#v_Height').val());
             }
         </script>
+    <SCRIPT language=Javascript>
+       <!--
+       function isNumberKey(evt)
+       {
+          var charCode = (evt.which) ? evt.which : evt.keyCode;
+          if (charCode != 46 && charCode > 31
+            && (charCode < 48 || charCode > 57))
+             return false;
+
+          return true;
+       }
+       //-->
+    </SCRIPT>
 </head>
 <body onload="myFunction()">
     <script>
@@ -363,12 +376,12 @@
                 <div class="row" id="pu">
                 <div class="col-md-4 mb-3" >
                       <label>PU Kg</label>
-                      <input type="text" class="form-control" placeholder="PU Kg" name="PU_Kg">
+                      <input type="text" class="form-control" placeholder="PU Kg" name="PU_Kg" onkeypress="return isNumberKey(event)">
                     </div>
 
                 <div class="col-md-4 mb-3">
                       <label>PU PKR</label>
-                      <input type="text" class="form-control" placeholder="PU PKR" name="PU_PKR">
+                      <input type="text" class="form-control" placeholder="PU PKR" name="PU_PKR" onkeypress="return isNumberKey(event)">
                     </div>
 
                 </div>
@@ -376,30 +389,30 @@
                 <div class="row" id="lw">
                 <div class="col-md-4 mb-3">
                       <label>Length</label>
-                      <input type="text" class="form-control" placeholder="Length" name="Volume_L" id="v_Length">
+                      <input type="text" class="form-control" placeholder="Length" name="Volume_L" id="v_Length" onkeypress="return isNumberKey(event)">
                     </div>
                 <div class="col-md-4 mb-3">
                       <label>Width</label>
-                      <input type="text" class="form-control" placeholder="Width" name="Volume_W" id="v_Width">
+                      <input type="text" class="form-control" placeholder="Width" name="Volume_W" id="v_Width" onkeypress="return isNumberKey(event)">
                     </div>
                 </div>
                 <div class="row" id="H">
                     <div class="col-md-4 mb-3">
                       <label>Height</label>
-                      <input type="text" class="form-control" placeholder="Height" name="Volume_H" id="v_Height">
+                      <input type="text" class="form-control" placeholder="Height" name="Volume_H" id="v_Height" onkeypress="return isNumberKey(event)">
                     </div>
                 </div>
                  <div class="row" id="A">
                     <div class="col-md-4 mb-3">
                       <label>Area</label>
-                      <input type="text" class="form-control" placeholder="Area" name="AREA" id="v_Area">
+                      <input type="text" class="form-control" placeholder="Area" name="AREA" id="v_Area" readonly>
                     </div>
                   </div>
 
                 <div class="row" id="V">
                     <div class="col-md-4 mb-3">
                       <label>Volume</label>
-                      <input type="text" class="form-control" placeholder="Volume" name="Volume" id="v_Volume">
+                      <input type="text" class="form-control" placeholder="Volume" name="Volume" id="v_Volume" readonly>
                     </div>
                 </div>
                 <div class="row" id="Ce">
@@ -528,10 +541,10 @@
                     <td>{{ things.Rebar_Qty }}</td>
                     <td>{{ things.Rebar_Length }}</td>
                     <td>{{ things.Rebar_Size }}</td>
-                    <td>{{ things.created_date|date:'d M Y'}}</td>
+                    <td>{{ things.created_date |date:'d M Y' }}</td>
                     <td>{{ things.Progress }}</td>
                     {% if things.FU_WV_Image %}
-                        <td><center><a href="/media/{{ things.FU_WV_Image }}">{{ things.FU_WV_Image }}</a></center></td>
+                        <td><center><a href="/media/{{ things.FU_WV_Image }}">View</a></center></td>
                     {% else %}
                         <td><center>No Media</center></td>
                     {% endif %}

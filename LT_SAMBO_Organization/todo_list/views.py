@@ -242,7 +242,8 @@ def daily_wv_submission(request, site_id):
             form.save()
 
         wv_main_item = WV_Main.objects.get(pk=site_id)
-        Daily_report_Details_item = WV_Daily_Report_Details.objects.filter(ID_WV_Main=wv_main_item.CD_Site)
+        Daily_report_Details_item = WV_Daily_Report_Details.objects.filter(ID_WV_Main=wv_main_item.CD_Site,
+                                                                           created_date=date.today())
         work_volume_items = Work_Volume.objects.all
         slab_level_items = Slab_Level.objects.all
         messages.success(request, ('Item has been added to the list!'))
@@ -257,7 +258,8 @@ def daily_wv_submission(request, site_id):
         wv_main_item = WV_Main.objects.get(pk=site_id)
         work_volume_items = Work_Volume.objects.all
         slab_level_items = Slab_Level.objects.all # filter(ID_WV_Main="TEL 308").order_by('id').first()
-        Daily_report_Details_items = WV_Daily_Report_Details.objects.filter(ID_WV_Main=wv_main_item.CD_Site)
+        Daily_report_Details_items = WV_Daily_Report_Details.objects.filter(ID_WV_Main=wv_main_item.CD_Site,
+                                                                            created_date=date.today())
         return render(request, 'submission/submit_daily_workvolume.html',
                       {'Daily_report_Details_items': Daily_report_Details_items,
                        'wv_main_item': wv_main_item,
@@ -268,9 +270,16 @@ def daily_wv_submission(request, site_id):
 def rp_work_volume(request):
     if request.method == 'POST':
         site_name = request.POST['site']
+
+        from_date = request.POST.get('date_from', None)
+        to_date = request.POST.get('date_to', None)
+        # dt_from_date = datetime.strptime(from_date, 'M-D-yyyy')
+        # to_date = request.POST['date_to']+':00:00.000000'
         site_items = Site.objects.all
-        wv_rp_items = WV_Daily_Report_Details.objects.filter(ID_WV_Main=site_name)
-        messages.success(request, ('Filter with site name: ' + site_name))
+        wv_rp_items = WV_Daily_Report_Details.objects.filter(ID_WV_Main=site_name,
+                                                             created_date__range=(from_date, to_date))
+        messages.success(request, ('Filter with site name: ' + site_name + ' From Date: ' + from_date
+                                   + ' To Date: ' +to_date))
 
         return render(request, 'Report/rp_work_volume.html', {'wv_rp_items': wv_rp_items
             , 'site_items': site_items})
@@ -285,6 +294,9 @@ def rp_work_volume(request):
 def export_report_csv(request):
     if request.method == 'POST':
         site_name = request.POST['site']
+        from_date = request.POST.get('date_from', None)
+        to_date = request.POST.get('date_to', None)
+
         response = HttpResponse(content_type='text/csv')
 
         writer = csv.writer(response)
@@ -292,7 +304,8 @@ def export_report_csv(request):
         writer.writerow(['Site Name', 'Site Supervisor', 'In Charge Design', 'In Charge QS', 'Site Manager'
                             , 'Construction Manager', 'Created Date', 'Modified Date'])
 
-        for report_wv_main in WV_Main.objects.filter(CD_Site=site_name).values_list("CD_Site","TX_Site_Supervisor","TX_Site_In_charge_Design"
+        for report_wv_main in WV_Main.objects.filter(CD_Site=site_name)\
+                .values_list("CD_Site","TX_Site_Supervisor","TX_Site_In_charge_Design"
                 ,"TX_Site_In_charge_QS","TX_Site_Manager","TX_Construction_Manager","created_date"
                 ,"modified_date"):
             writer.writerow(report_wv_main)
@@ -301,7 +314,9 @@ def export_report_csv(request):
                                 , 'PU Kg','PU PKR','Length','Width','Height','Volume','AREA','Progress','Cement','Rebar Qty'
                              ,'Rebar Length','Rebar Size','created_date'])
 
-        for report_wv in WV_Daily_Report_Details.objects.filter(ID_WV_Main=site_name).values_list("ID_WV_Main","TX_Panel_No","TX_Zone"
+        for report_wv in WV_Daily_Report_Details.objects.filter(ID_WV_Main=site_name,
+                                                                created_date__range=(from_date, to_date))\
+                .values_list("ID_WV_Main","TX_Panel_No","TX_Zone"
                 ,"CD_Slab_Level","CD_Work","TX_Man_Power_Work","TX_Sur_Joint"
                 ,"PU_Kg","PU_PKR","Volume_L","Volume_W","Volume_H","Volume","AREA","Progress","Cement","Rebar_Qty"
                 ,"Rebar_Length","Rebar_Size","created_date"):
@@ -311,6 +326,7 @@ def export_report_csv(request):
             formated_date = local_dt.strftime("%Y-%m-%d_%H:%M_")
             extension = ".csv"
             file_name = str(formated_date)+site_name+extension
+
             response['Content-Disposition'] = f'attachment; filename={file_name}'
 
     return response
