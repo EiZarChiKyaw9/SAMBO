@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
-from .forms import Listform, WorkVolumeform, SlabLevelForm, SiteForm, WVMainForm, WVDailyReportDetailsForm
-from .models import list, Work_Volume, Slab_Level, Site, WV_Main, WV_Daily_Report_Details
+from .forms import Listform, WorkVolumeform, SlabLevelForm, SiteForm, WVMainForm, WVDailyReportDetailsForm,
+from .models import list, Work_Volume, Slab_Level, Site, WV_Main, WV_Daily_Report_Details,
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 import csv
@@ -348,3 +348,5 @@ def download_image(request, img_url):
     return render(request, 'image_viewer.html', {
         'uploaded_file_url': uploaded_file_url
     })
+
+

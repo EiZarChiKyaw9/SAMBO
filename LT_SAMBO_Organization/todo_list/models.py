@@ -77,3 +77,6 @@ class WV_Daily_Report_Details(models.Model):
 
     def __str__(self):
         return self.ID_WV_Main
+
+
+

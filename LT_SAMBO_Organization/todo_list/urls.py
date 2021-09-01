@@ -27,7 +27,7 @@ urlpatterns = [
     path('slab_level_edit/edit/<slab_id>',views.slab_level_edit, name='edit'),
     path('work_volume_edit/edit/<wv_id>',views.work_volume_edit, name='edit'),
     path('wv_main_edit/edit_info/<wv_info_id>',views.wv_main_edit, name='edit_info'),
-    path('download_image/download/<img_url>',views.download_image, name='download')
+    path('download_image/download/<img_url>',views.download_image, name='download'),
     ]
 
 if settings.DEBUG:
