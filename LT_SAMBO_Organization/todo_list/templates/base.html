@@ -47,10 +47,12 @@
             <li><a class="dropdown-item" href="{% url 'work_volume' %}">Defect</a></li>
             <li><a class="dropdown-item" href="{% url 'slab_level' %}">Slab Level</a></li>
             <li><a class="dropdown-item" href="{% url 'site' %}">Site</a></li>
-
+            <li><a class="dropdown-item" href="{% url 'equipment' %}">Equipment</a></li>
+            <li><a class="dropdown-item" href="{% url 'equipment_specification' %}">Equipment_Specification</a></li>
+            <li><a class="dropdown-item" href="{% url 'designation' %}">Designation</a></li>
+            <li><a class="dropdown-item" href="{% url 'classification' %}">Classification</a></li>
             <li><hr class="dropdown-divider"></li>
             <li><a class="dropdown-item" href="{% url 'site_info_create' %}">Site Info</a></li>
-            <li><a class="dropdown-item" href="{% url 'inspection_status' %}">Inspection Status</a></li>
           </ul>
         </li>
         {% endif %}
@@ -60,6 +62,7 @@
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li><a class="dropdown-item" href="{% url 'submit_work_volume' %}">Daily Work Volume Report</a></li>
+
             <li><hr class="dropdown-divider"></li>
            <!-- <li><a class="dropdown-item" href="#">Something else here</a></li>-->
           </ul>
@@ -70,6 +73,7 @@
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
             <li><a class="dropdown-item" href="{% url 'work_volume_report' %}">Work Volume Report</a></li>
+            <li><a class="dropdown-item" href="{% url 'daily_report' %}">Daily Report</a></li>
             <li><hr class="dropdown-divider"></li>
            <!-- <li><a class="dropdown-item" href="#">Something else here</a></li>-->
           </ul>

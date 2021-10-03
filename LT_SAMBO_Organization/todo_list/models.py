@@ -79,4 +79,58 @@ class WV_Daily_Report_Details(models.Model):
         return self.ID_WV_Main
 
 
+class Equipment(models.Model):
+    TX_Equipment_Name = models.CharField(max_length=200)
+    Is_Active = models.BooleanField(default=True)
 
+    def __str__(self):
+        return self.TX_Equipment_Name
+
+
+class Equipment_Specification(models.Model):
+    TX_Equipment_Specification_Name = models.CharField(max_length=200)
+    Is_Active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.TX_Equipment_Specification_Name
+
+
+class Designation(models.Model):
+    TX_Designation_Name = models.CharField(max_length=200)
+    Is_Active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.TX_Designation_Name
+
+
+class DR_Details(models.Model):
+    ID_DR_Main = models.CharField(max_length=200)
+    TX_Panel_No_Range = models.CharField(max_length=200, null=True, blank=True)
+    Start_Date = models.CharField(max_length=200, null=True, blank=True)
+    End_Casting_Concrete = models.CharField(max_length=200, null=True, blank=True)
+    Manpower_Classification = models.CharField(max_length=200, null=True, blank=True)
+    TX_Designation_No = models.CharField(max_length=200, null=True, blank=True)
+    Day_Night = models.CharField(max_length=200, null=True, blank=True)
+    CD_Equipment = models.CharField(max_length=200, null=True, blank=True)
+    CD_Equipment_Specification = models.CharField(max_length=200, null=True, blank=True)
+    TX_Equipment_Qty = models.CharField(max_length=200, null=True, blank=True)
+    TX_Equipment_Unit= models.CharField(max_length=200, null=True, blank=True)
+    Remark = models.CharField(max_length=200, null=True, blank=True)
+    created_date = models.DateTimeField(auto_now_add=True)
+    modified_date = models.DateTimeField(auto_now=True)
+    Is_Active = models.BooleanField(default=True)
+    FU_WV_Image = models.ImageField(null=True, blank=True, upload_to="defect_submission/%Y/%m/%d/")
+    TX_Designation = models.CharField(max_length=200, default='', null=True, blank=True)
+    TX_Activity = models.CharField(max_length=200, blank=True, default='', null=True)
+    TX_Classification_Name = models.CharField(max_length=200, blank=True, default='', null=True)
+
+    def __str__(self):
+        return self.ID_DR_Main
+
+
+class Classification(models.Model):
+    TX_Classification_Name = models.CharField(max_length=200)
+    Is_Active = models.BooleanField(default=True)
+
+    def __str__(self):
+        return self.TX_Classification_Name

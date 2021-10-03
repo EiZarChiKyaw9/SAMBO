@@ -192,14 +192,14 @@
       }
       else
       {
-        $("#lw").hide();
-        $("#A").hide();
-        $("#H").hide();
-        $("#V").hide();
-        $("#Ce").hide();
-        $("#RSQ").hide();
-        $("#RL").hide();
-        $("#pu").hide();
+        $("#lw").show();
+        $("#A").show();
+        $("#H").show();
+        $("#V").show();
+        $("#Ce").show();
+        $("#RSQ").show();
+        $("#RL").show();
+        $("#pu").show();
       }
     });
 });
@@ -309,7 +309,7 @@
                         <div class="col-sm-12">
 
                          <select class="form-select" name="CD_Slab_Level" aria-label="Default select example" id="" required>
-                            <option selected>Select Slab Level</option>
+                            <option value="" selected>Select Slab Level</option>
                              {%if slab_level_items %}
                                 {% for things in slab_level_items %}
                                     <option value="{{ things.TX_Slab_Level_Name }}">{{ things.TX_Slab_Level_Name }}</option>
@@ -325,7 +325,7 @@
                 <div class="col-sm-12">
 
                          <select id="purpose" class="form-select" name="CD_Work" aria-label="Default select example" required>
-                            <option selected>Select Defect</option>
+                            <option value="" selected>Select Defect</option>
                              {%if work_volume_items %}
                                 {% for things in work_volume_items %}
                                     <option value={{ things.Tx_Name }}>{{ things.Tx_Name }}</option>
@@ -348,7 +348,7 @@
                       <div class="col-sm-12">
 
                          <select class="form-select" name="TX_Sur_Joint" aria-label="Default select example" required>
-                            <option selected>Select Surface or Joint</option>
+                            <option value="" selected>Select Surface or Joint</option>
                                 <option value=Surface>Surface</option>
                              <option value=Joint>Joint</option>
                         </select>
@@ -361,7 +361,7 @@
                         <div class="col-sm-12">
 
                          <select class="form-select" name="Progress" aria-label="Default select example" required>
-                            <option selected>Select Progress</option>
+                            <option value="" selected>Select Progress</option>
                             <option value="Temporary stop">TS - Temporary stop</option>
                              <option value="FOR STATUS">FOR STATUS</option>
                              <option value="C - Continue">C - Continue</option>

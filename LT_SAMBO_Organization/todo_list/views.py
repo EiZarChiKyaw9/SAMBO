@@ -1,12 +1,13 @@
 from django.shortcuts import render, redirect
-from .forms import Listform, WorkVolumeform, SlabLevelForm, SiteForm, WVMainForm, WVDailyReportDetailsForm,
-from .models import list, Work_Volume, Slab_Level, Site, WV_Main, WV_Daily_Report_Details,
+from .forms import Listform, WorkVolumeform, SlabLevelForm, SiteForm, WVMainForm, WVDailyReportDetailsForm,EquipmentForm,EquipmentSpecificationForm,DesignationForm,DRDetailsForm,ClassificationForm
+from .models import list, Work_Volume, Slab_Level, Site, WV_Main, WV_Daily_Report_Details,Equipment\
+    ,Equipment_Specification,Designation,DR_Details,Classification
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 import csv
 from django.http import HttpResponseRedirect, HttpResponse
 from .models import *
-from datetime import datetime
+from datetime import datetime, date, timedelta
 from django.core.files.storage import FileSystemStorage
 
 
@@ -241,6 +242,7 @@ def daily_wv_submission(request, site_id):
         if form.is_valid():
             form.save()
 
+        tmr_date = datetime.date.today() + datetime.timedelta(days=1)
         wv_main_item = WV_Main.objects.get(pk=site_id)
         Daily_report_Details_item = WV_Daily_Report_Details.objects.filter(ID_WV_Main=wv_main_item.CD_Site,
                                                                            created_date=date.today())
@@ -258,8 +260,10 @@ def daily_wv_submission(request, site_id):
         wv_main_item = WV_Main.objects.get(pk=site_id)
         work_volume_items = Work_Volume.objects.all
         slab_level_items = Slab_Level.objects.all # filter(ID_WV_Main="TEL 308").order_by('id').first()
+        tmr_date = datetime.now() + timedelta(1)
         Daily_report_Details_items = WV_Daily_Report_Details.objects.filter(ID_WV_Main=wv_main_item.CD_Site,
-                                                                            created_date=date.today())
+                                                                            created_date__range=(date.today()
+                                                                            ,tmr_date))
         return render(request, 'submission/submit_daily_workvolume.html',
                       {'Daily_report_Details_items': Daily_report_Details_items,
                        'wv_main_item': wv_main_item,
@@ -350,3 +354,137 @@ def download_image(request, img_url):
     })
 
 
+def equipment(request):
+    if request.method == 'POST':
+        form = EquipmentForm(request.POST or None)
+        if form.is_valid():
+            form.save()
+
+        equipment_items = Equipment.objects.all
+        messages.success(request, ('Item has been added to the list!'))
+        return render(request, 'admin/equipment_create.html', {'equipment_items': equipment_items})
+    else:
+        equipment_items = Equipment.objects.all
+        return render(request, 'admin/equipment_create.html', {'equipment_items': equipment_items})
+
+
+def equipment_specification(request):
+    if request.method == 'POST':
+        form = EquipmentSpecificationForm(request.POST or None)
+        if form.is_valid():
+            form.save()
+
+        equipment_specification_items = Equipment_Specification.objects.all
+        messages.success(request, ('Item has been added to the list!'))
+        return render(request, 'admin/equipment_specification_create.html', {'equipment_specification_items': equipment_specification_items})
+    else:
+        equipment_specification_items = Equipment_Specification.objects.all
+        return render(request, 'admin/equipment_specification_create.html', {'equipment_specification_items': equipment_specification_items})
+
+
+def designation(request):
+    if request.method == 'POST':
+        form = DesignationForm(request.POST or None)
+        if form.is_valid():
+            form.save()
+
+        designation_items = Designation.objects.all
+        messages.success(request, ('Item has been added to the list!'))
+        return render(request, 'admin/designation_create.html', {'designation_items': designation_items})
+    else:
+        designation_items = Designation.objects.all
+        return render(request, 'admin/designation_create.html', {'designation_items': designation_items})
+
+
+def daily_dr_submission(request, site_id):
+    if request.method == 'POST': # and request.FILES['FU_Site_Image'] if 'FU_Site_Image' in request.FILES else False:
+        form = DRDetailsForm(request.POST or None, request.FILES)
+
+        if form.is_valid():
+            form.save()
+
+        tmr_date = datetime.now() + timedelta(1)
+        wv_main_item = WV_Main.objects.get(pk=site_id)
+        DR_Details_items = DR_Details.objects.filter(ID_DR_Main=wv_main_item.CD_Site
+                                                     , created_date__range=(date.today()
+                                                                            ,tmr_date))
+        work_volume_items = Work_Volume.objects.all
+        slab_level_items = Slab_Level.objects.all
+        equipment_items = Equipment.objects.all
+        equipment_specification_items = Equipment_Specification.objects.all
+        designation_items = Designation.objects.all
+        classification_items = Classification.objects.all
+        messages.success(request, ('Item has been added to the list!'))
+        return render(request, 'submission/submit_daily_report.html',
+                      {'DR_Details_items': DR_Details_items,
+                       'wv_main_item': wv_main_item,
+                       'work_volume_items': work_volume_items,
+                       'slab_level_items': slab_level_items,
+                       'equipment_items': equipment_items,
+                       'equipment_specification_items': equipment_specification_items,
+                       'designation_items': designation_items,'classification_items':classification_items})
+
+    else:
+
+        wv_main_item = WV_Main.objects.get(pk=site_id)
+        work_volume_items = Work_Volume.objects.all
+        slab_level_items = Slab_Level.objects.all # filter(ID_WV_Main="TEL 308").order_by('id').first()
+        equipment_items = Equipment.objects.all
+        equipment_specification_items = Equipment_Specification.objects.all
+        designation_items = Designation.objects.all
+        classification_items = Classification.objects.all
+        tmr_date = datetime.now() + timedelta(1)
+
+        DR_Details_items = DR_Details.objects.filter(ID_DR_Main=wv_main_item.CD_Site, created_date__range=(date.today()
+                                                                            ,tmr_date))
+        return render(request, 'submission/submit_daily_report.html',
+                      {'DR_Details_items': DR_Details_items,
+                       'wv_main_item': wv_main_item,
+                       'work_volume_items': work_volume_items,
+                       'slab_level_items': slab_level_items,
+                       'equipment_items': equipment_items,
+                       'equipment_specification_items': equipment_specification_items,
+                       'designation_items': designation_items,
+                       'classification_items': classification_items
+                       })
+
+
+
+def rp_daily_report(request):
+    if request.method == 'POST':
+        site_name = request.POST['site']
+
+        from_date = request.POST.get('date_from', None)
+        to_date = request.POST.get('date_to', None)
+        # dt_from_date = datetime.strptime(from_date, 'M-D-yyyy')
+        # to_date = request.POST['date_to']+':00:00.000000'
+        site_items = Site.objects.all
+        classification_items = Classification.objects.all
+        dr_rp_items = DR_Details.objects.filter(ID_DR_Main=site_name,
+                                                             created_date__range=(from_date, to_date))
+        messages.success(request, ('Filter with site name: ' + site_name + ' From Date: ' + from_date
+                                   + ' To Date: ' +to_date))
+
+        return render(request, 'Report/rp_daily_report.html', {'dr_rp_items': dr_rp_items
+            , 'site_items': site_items, 'classification_items': classification_items})
+    else:
+        site_items = Site.objects.all
+        dr_rp_items = DR_Details.objects.all
+        classification_items = Classification.objects.all
+
+        return render(request, 'Report/rp_daily_report.html', {'dr_rp_items': dr_rp_items
+            , 'site_items': site_items, 'classification_items': classification_items})
+
+
+def classification(request):
+    if request.method == 'POST':
+        form = ClassificationForm(request.POST or None)
+        if form.is_valid():
+            form.save()
+
+        classification_items = Classification.objects.all
+        messages.success(request, ('Item has been added to the list!'))
+        return render(request, 'admin/classification_create.html', {'classification_items': classification_items})
+    else:
+        classification_items = Classification.objects.all
+        return render(request, 'admin/classification_create.html', {'classification_items': classification_items})
