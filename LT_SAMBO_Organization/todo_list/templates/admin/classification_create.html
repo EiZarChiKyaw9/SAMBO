@@ -5,7 +5,7 @@
 {% load static %}
 
 {% block content %}
-<title>LT Sambo - Inspection Status</title>
+<title>LT Sambo - Classification</title>
 <br><br>
 <div class="container">
 
@@ -24,14 +24,14 @@
 
     {% endif %}
     <h3 class="panel-title">
-        <span class="english">Inspection Status Registration</span>
+        <span class="english">Classification</span>
     </h3>
     <form class="col-md-4 col-md-offset-2" method="post">
             {% csrf_token %}
-            <span>Inspection Status</span>
-            <input class="form-control col-md-6 me-2" type="input" placeholder="Inspection Status" aria-label="TX_Inspection_Status" value="{{inspection_status_item.TX_Inspection_Status}}" name ="TX_Inspection_Status" required><br>
+            <span>Classification</span>
+            <input class="form-control col-md-6 me-2" type="input" placeholder="Classification" aria-label="TX_Classification_Name" value="{{equipment_item.TX_Classification_Name}}" name ="TX_Classification_Name" required><br>
 
-                {% if inspection_status_item.Is_Active == False %}
+                {% if classification_items.Is_Active == False %}
                     <div class="col-md-4 mb-3">
                       <label>Status</label>
                       <div class="col-sm-12">
@@ -57,7 +57,7 @@
                     </div>
                 {% endif %}
 
-        {% if inspection_status_item %}
+        {% if classification_items %}
             <div class="d-grid gap-2">
                 <button class="btn btn-outline-primary mb-3" type="submit">Update</button>
             </div>
@@ -67,7 +67,7 @@
             </div>
         {% endif %}
 
-         <center><a class="dropdown-item secondary bg-primary" href="{% url 'inspection_status' %}">Cancel</a></center>
+         <center><a class="dropdown-item secondary bg-primary" href="{% url 'designation' %}">Cancel</a></center>
             <div class="d-grid gap-2">
 
         </div>
@@ -75,24 +75,24 @@
     <br>
 
 
-    {%if inspection_status_items %}
+    {%if classification_items %}
 
     <br>
     <div class="col-md-6 col-md-offset-2 primary md-2">
-        <span> Inspection Status Lists</span>
+        <span> Classification Lists</span>
     <table class="table table-striped secondary border" style="Color:#dcdcdc; line-height:1;">
     <thead>
     <!--<a href="#" class="btn btn-primary btn-xs pull-right"><b>+</b> Add new categories</a>-->
         <tr>
-            <th><center>Inspection Status</center></th>
+            <th><center>Classification</center></th>
             <th><center>Status</center></th>
             <th class="text-center"><center>Action</center></th>
         </tr>
     </thead>
-      {% for things in inspection_status_items %}
+      {% for things in classification_items %}
             <tr style="Color:#dcdcdc;">
 
-                <td><center>{{ things.TX_Inspection_Status }} </center></td>
+                <td><center>{{ things.TX_Classification_Name }} </center></td>
                 {% if things.Is_Active %}
                     <td class="custom-control custom-checkbox" >
                         <center><input type="checkbox" class="custom-control-input" disabled checked></center>
