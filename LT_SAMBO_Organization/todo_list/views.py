@@ -488,3 +488,41 @@ def classification(request):
     else:
         classification_items = Classification.objects.all
         return render(request, 'admin/classification_create.html', {'classification_items': classification_items})
+
+   
+def export_dr_report_csv(request):
+    if request.method == 'POST':
+        site_name = request.POST['site']
+        from_date = request.POST.get('date_from', None)
+        to_date = request.POST.get('date_to', None)
+
+        response = HttpResponse(content_type='text/csv')
+
+        writer = csv.writer(response)
+
+        writer.writerow(['Site Name', 'Site Supervisor', 'In Charge Design', 'In Charge QS', 'Site Manager'
+                            , 'Construction Manager', 'Created Date', 'Modified Date'])
+
+        for report_wv_main in WV_Main.objects.filter(CD_Site=site_name)\
+                .values_list("CD_Site","TX_Site_Supervisor","TX_Site_In_charge_Design"
+                ,"TX_Site_In_charge_QS","TX_Site_Manager","TX_Construction_Manager","created_date"
+                ,"modified_date"):
+            writer.writerow(report_wv_main)
+            writer.writerow('')
+            writer.writerow(['Site Name','Activity', 'Panel No Range', 'Start','End(Casting Concrete)','Manpower Classification',
+                             'Designation','Day/Night','Designation Qty','Equipment','Equipment Specification','Equipment Qty', 'Equipment Unit','Remark', 'Date', 'Attachment'])
+
+        for report_dr_wv in DR_Details.objects.filter(ID_DR_Main=site_name,
+                                                                created_date__range=(from_date, to_date))\
+                .values_list("ID_DR_Main","TX_Activity","TX_Panel_No_Range","Start_Date","End_Casting_Concrete","Manpower_Classification"
+                ,"TX_Designation","Day_Night","TX_Designation_No","CD_Equipment","CD_Equipment_Specification","TX_Equipment_Qty","TX_Equipment_Unit","Remark","created_date","FU_WV_Image"):
+            writer.writerow(report_dr_wv)
+
+            local_dt = datetime.now()
+            formated_date = local_dt.strftime("%Y-%m-%d_%H:%M_")
+            extension = ".csv"
+            file_name = str(formated_date)+site_name + "Daily_Report" + extension
+
+            response['Content-Disposition'] = f'attachment; filename={file_name}'
+
+    return response
