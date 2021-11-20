@@ -25,6 +25,7 @@ urlpatterns = [
     path('rp_work_volume/work_volume_report',views.rp_work_volume, name='work_volume_report'),
     path('rp_daily_report/daily_report',views.rp_daily_report, name='daily_report'),
     path('export_report_csv/report_csv',views.export_report_csv, name='report_csv'),
+    path('export_report_csv/report_csv',views.export_report_csv, name='report_csv'),
     path('site_info/information/<site_id>',views.site_info, name='information'),
     path('site_edit/edit_site/<site_id>',views.site_edit, name='edit_site'),
     path('slab_level_edit/edit/<slab_id>',views.slab_level_edit, name='edit'),
