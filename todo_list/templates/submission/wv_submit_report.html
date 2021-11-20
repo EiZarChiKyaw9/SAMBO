@@ -1,0 +1,53 @@
+
+{% extends 'base.html' %}
+
+{% block title %}To-Do-List{% endblock %}
+{% load static %}
+
+{% block content %}
+<title>LT Sambo - Site Info to submit daily work volume</title>
+<div class="container">
+
+
+
+{% if messages %}
+
+      {% for message in messages %}
+        <br>
+        <!-- alert box section start -->
+         <div class="alert alert-warning alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <!-- alert box section end -->
+   {% endfor %}
+
+{% endif %}
+    {%if wv_main_items %}
+    <div class="row mb3">
+      {% for things in wv_main_items %}
+
+      <div class="col-md-4 mb-3">
+        <div class="card h-100">
+          <a href="{% url 'daily_dr_submission' things.id %}" class="btn btn-primary">{{ things.CD_Site }}</a>
+          <div class="card-body">
+          </div>
+          <div class="card-footer">
+            <center>
+                <a href="{% url 'wv_daily_submission' things.id %}" class="btn btn-primary col-md-4">WV</a>
+                <a href="{% url 'daily_dr_submission' things.id %}" class="btn btn-primary col-md-4">DR</a>
+                <br></br>
+                <a href="{% url 'information' things.id %}" class="btn btn-primary col-md-4">Site Info</a>
+            </center>
+          </div>
+        </div>
+          <br>
+      </div>
+
+
+        {% endfor %}
+    </div>
+   {% endif %}
+</div>
+
+{% endblock %}

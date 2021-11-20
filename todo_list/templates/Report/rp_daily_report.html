@@ -1,0 +1,141 @@
+{% extends 'base.html' %}
+
+{% block title %}  {% endblock %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LT SAMBO - Daily report</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+</head>
+<body>
+<script>
+    $('#datepicker').datepicker();
+    $('#datepicker').on('changeDate', function() {
+        $('#my_hidden_input').val(
+            $('#datepicker').datepicker('getFormattedDate')
+        );
+    });
+</script>
+<!--{% url 'report_csv' %}-->
+    <div class="container">
+        <H3><center>Daily Report</center> </H3>
+
+
+
+
+        <!--<a href = "javascript:;" onclick = "this.href='{% url 'work_volume_report' %}' document.getElementById('site1').value">Send</a>-->
+        <div class="row mb-12">
+            <form method="post">
+                {% csrf_token %}
+                <br><br>
+
+            <div class="form col-md-12 me-2 mb-3">
+                <div class="col-md-3 mb-3">
+
+                 <select class="form-select col-md-3 mb-3" name="site" aria-label="Default select example"  required>
+                    <option selected>Select Site</option>
+                     {%if site_items %}
+                        {% for things in site_items %}
+                            <option value="{{ things.TX_Site_Name }}">{{ things.TX_Site_Name }}</option>
+                        {% endfor %}
+                    {% endif %}
+                </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                   <label>From Date</label>
+                    <input type="date" name="date_from" >
+                </div>
+                <div class="col-md-6 mb-3">
+                   <label>To Date</label>
+                    <input type="date" name="date_to" >
+                </div>
+                <div class="col-md-6 mb-3">
+                    <button class="btn btn-outline-primary mb-3" type="submit">Search</button>
+                    <button formaction="{% url 'dr_report_csv' %}" class="btn btn-secondary mb-3" type="submit" id="export">Export CSV</button>
+                    <button class="btn btn-secondary mb-3" href="{% url 'home' %}" role="button">Back</button>
+                </div>
+
+            </div>
+                </form>
+        </div>
+        {% if messages %}
+
+                      {% for message in messages %}
+                        <br>
+                        <!-- alert box section start -->
+                         <div class="alert alert-info alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        <!-- alert box section end -->
+                       {% endfor %}
+
+                    {% endif %}
+        </div>
+           <br>
+            <br>
+              <br>
+            <div class="container">
+                <div class="row col-md-12">
+              {% if dr_rp_items %}
+                <table class="table table-striped secondary border" style="Color:#dcdcdc; line-height:1;">
+                 <thead>
+                   <!--<a href="#" class="btn btn-primary btn-xs pull-right"><b>+</b> Add new categories</a>-->
+                   <tr>
+                   <th><center>Site Name</center></th>
+                   <!--<th>Is_Active</th>--><th class="text-center"><center>Activity</center></th>
+                   <th class="text-center"><center>Panel No Range</center></th>
+                   <th class="text-center"><center>Start</center></th>
+                   <th class="text-center"><center>End(Casting Concrete)</center></th>
+                   <th class="text-center"><center>Manpower Classification</center></th>
+                   <th class="text-center"><center>Designation</center></th>
+                   <th class="text-center"><center>Day/Night</center></th>
+                   <th class="text-center"><center>Designation Qty</center></th>
+                   <th class="text-center"><center>Equipment</center></th>
+                   <th class="text-center"><center>Equipment Spec;</center></th>
+                   <th class="text-center"><center>Equipment Qty</center></th>
+                   <th class="text-center"><center>Equipment Unit</center></th>
+                   <th class="text-center"><center>Remark</center></th>
+                   <th class="text-center"><center>Date</center></th>
+                   <th class="text-center"><center>Attachment</center></th>
+                   </tr>
+                   </thead>
+
+                  {% for things in dr_rp_items %}
+                    <tr style="Color:#dcdcdc;">
+                    <td>{{ things.ID_DR_Main }}</td>
+                    <td>{{ things.TX_Activity }}</td>
+                    <td>{{ things.TX_Panel_No_Range }}</td>
+                    <td>{{ things.Start_Date }}</td>
+                    <td>{{ things.End_Casting_Concrete }}</td>
+                    <td>{{ things.Manpower_Classification }}</td>
+                    <td>{{ things.TX_Designation }}</td>
+                    <td>{{ things.Day_Night }}</td>
+                    <td>{{ things.TX_Designation_No }}</td>
+                    <td>{{ things.CD_Equipment }}</td>
+                    <td>{{ things.CD_Equipment_Specification }}</td>
+                    <td>{{ things.TX_Equipment_Qty }}</td>
+                    <td>{{ things.TX_Equipment_Unit }}</td>
+                    <td>{{ things.Remark }}</td>
+                    <td>{{ things.created_date |date:'d M Y' }}</td>
+                    {% if things.FU_WV_Image %}
+                    <td><center><a href="/media/{{ things.FU_WV_Image }}">View</a></center></td>
+                    {% else %}
+                    <td><center>No Media</center></td>
+                    {% endif %}
+                    </tr>
+                    {% endfor %}
+                </table>
+                {% endif %}
+        </div>
+    </div>
+</body>
+</html>
+
+{% endblock %}

@@ -1,0 +1,444 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %} LT Sambo - Submit Daily Report {% endblock %}
+
+{% block content %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>LT Sambo - {{ wv_main_item.CD_Site }} Submit daily report</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <script>
+    $(document).ready(function(){
+    $('#purpose').on('change', function() {
+        alert(this.value);
+      if ( this.value == 'Equipment')
+          //.....................^.......
+          {
+            $("#EQ").show();
+            $("#ES").show();
+            $("#EQQ").show();
+            $("#EU").show();
+            $("#A").hide();
+            $("#S").hide();
+            $("#E").hide();
+            $("#R").hide();
+            $("#MC").hide();
+            $("#D").hide();
+            $("#DN").hide();
+            $("#DQ").hide();
+          }
+          else if( this.value == 'Main Contractor')
+          {
+            $("#A").show();
+            $("#S").show();
+            $("#E").show();
+            $("#R").show();
+            $("#MC").hide();
+            $("#D").hide();
+            $("#DN").hide();
+            $("#DQ").hide();
+            $("#EQ").hide();
+            $("#ES").hide();
+            $("#EQQ").hide();
+            $("#EU").hide();
+          }
+          else if( this.value == 'Manpower')
+          {
+            $("#MC").show();
+            $("#D").show();
+            $("#DN").show();
+            $("#DQ").show();
+            $("#EQ").hide();
+            $("#ES").hide();
+            $("#EQQ").hide();
+            $("#EU").hide();
+            $("#A").hide();
+            $("#S").hide();
+            $("#E").hide();
+            $("#R").hide();
+          }
+           else
+          {
+            $("#A").show();
+            $("#S").show();
+            $("#E").show();
+            $("#R").show();
+            $("#MC").hide();
+            $("#D").show();
+            $("#DN").show();
+            $("#DQ").show();
+            $("#EQ").show();
+            $("#ES").show();
+            $("#EQQ").show();
+            $("#EU").show();
+          }
+    });
+});
+    </script>
+        <script>
+        $(document).ready(function(){
+            $('#v_Width').keyup(calculate);
+            $('#v_Length').keyup(calculate);
+        });
+        function calculate(e)
+        {
+            var num = $('#v_Width').val() * $('#v_Length').val();
+            var n = num.toFixed(2);
+
+            $('#v_Area').val(n) ;
+        }
+    </script>
+    <script>
+            $(document).ready(function(){
+                $('#v_Height').keyup(cal);
+            });
+            function cal(s)
+            {
+               var num = $('#v_Height').val() * $('#v_Area').val();
+               var n2 = num.toFixed(2);
+               $('#v_Volume').val(n2) ;
+            }
+        </script>
+    <script>
+            $(document).ready(function(){
+                $('#Site').textchanged(f);
+            });
+            function getid(f)
+            {
+                $('#main').val($('#v_Height').val());
+            }
+        </script>
+    <SCRIPT language=Javascript>
+       <!--
+       function isNumberKey(evt)
+       {
+          var charCode = (evt.which) ? evt.which : evt.keyCode;
+          if (charCode != 46 && charCode > 31
+            && (charCode < 48 || charCode > 57))
+             return false;
+
+          return true;
+       }
+       //-->
+    </SCRIPT>
+</head>
+<body onload="myFunction()">
+    <script>
+        function myFunction() {
+          $("#lw").hide();
+            $("#A").hide();
+            $("#H").hide();
+            $("#V").hide();
+            $("#Ce").hide();
+            $("#RSQ").hide();
+            $("#RL").hide();
+            $("#pu").hide();
+        }
+    </script>
+    <div class="container">
+        <H3><center>Submit Daily Report</center> </H3>
+      <br><br>
+        <div class="row">
+
+          <div class="d-flex col-md-8">
+
+              <div class="container">
+                  {% if messages %}
+
+                      {% for message in messages %}
+                        <br>
+                        <!-- alert box section start -->
+                         <div class="alert alert-success alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        <!-- alert box section end -->
+                       {% endfor %}
+
+                    {% endif %}
+                    <form class="d-flex" method="post"  enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row">
+                        <div class="col-md-3 mb-3">
+                          <label>Site Name</label>
+                            <input type="text" class="form-control" placeholder=""  name="ID_DR_Main" value="{{ wv_main_item.CD_Site }}" readonly required>
+                            <!--<p type="text" id="Site" class="form-control" placeholder="" name="ID_WV_Main" required>{{ wv_main_item.CD_Site }}</p>-->
+                        </div>
+
+                    <div class="col-md-3 mb-3">
+                      <label>Classification</label>
+                        <div class="col-sm-12">
+
+                        <select id="purpose" class="form-select" name="TX_Classification_Name" aria-label="Default select example" >
+                            <option selected>Classification</option>
+                             {%if classification_items %}
+                                {% for things in classification_items %}
+                                    <option value="{{ things.TX_Classification_Name }}">{{ things.TX_Classification_Name }}</option>
+                                {% endfor %}
+                            {% endif %}
+                        </select>
+
+                        </div>
+                    </div>
+
+
+                      <div class="col-md-3 mb-3" id="A">
+                      <label>Activity</label>
+                      <div class="col-sm-12">
+
+                         <select class="form-select" name="TX_Activity" aria-label="Default select example" >
+                            <option value='' selected>Activity</option>
+                                <option value=Surface>Excavation or Slab activity or shaft depth</option>
+                             <option value=Joint>Skin wall or wailer beam activity</option>
+                        </select>
+
+                       </div>
+                      </div>
+
+
+
+                        <div class="col-md-3 mb-3" id="R">
+                          <label>Panel No Range</label>
+                          <input type="text" class="form-control" placeholder="Panel No Range" name="TX_Panel_No_Range" >
+                        </div>
+
+
+
+                        <div class="col-md-3 mb-3" id="S">
+                          <label>Start</label>
+                          <input type="text" class="form-control" placeholder="Start Date" name="Start_Date" >
+                        </div>
+
+
+
+                         <div class="col-md-3 mb-3" id="E">
+                          <label>End(Casting Concrete)</label>
+                          <input type="text" class="form-control" placeholder="End_Casting_Concrete"  name="End_Casting_Concrete" >
+                         </div>
+
+
+
+                      <div class="col-md-3 mb-3" id="MC">
+                      <label>Manpower_Classification</label>
+                      <div class="col-sm-12">
+
+                         <select class="form-select" name="Manpower_Classification" aria-label="Default select example" >
+                            <option value='' selected>Manpower_Classification</option>
+                                <option value=SAMBO>SAMBO</option>
+                             <option value=Supplier>Supplier</option>
+                        </select>
+
+                       </div>
+                      </div>
+
+
+
+                      <div class="col-md-3 mb-3" id="D">
+                      <label>Designation</label>
+                        <div class="col-sm-12">
+
+                         <select class="form-select" name="TX_Designation" aria-label="Default select example" >
+                            <option value='' selected>Designation</option>
+                             {%if designation_items %}
+                                {% for things in designation_items %}
+                                    <option value="{{ things.TX_Designation_Name }}">{{ things.TX_Designation_Name }}</option>
+                                {% endfor %}
+                            {% endif %}
+                        </select>
+                    </div>
+                    </div>
+
+
+
+
+                     <div class="col-md-3 mb-3" id="DN">
+                      <label>Day/Night</label>
+                      <div class="col-sm-12">
+
+                         <select class="form-select" name="Day_Night" aria-label="Default select example" >
+                            <option value='' selected>Day or Night</option>
+                                <option value=Day>Day</option>
+                             <option value=Night>Night</option>
+                        </select>
+
+                       </div>
+                      </div>
+
+
+
+                     <div class="col-md-3 mb-3" id="DQ">
+                          <label>Designation Qty</label>
+                          <input type="text" class="form-control" placeholder="Designation No"  name="TX_Designation_No" onkeypress="return isNumberKey(event)" >
+                     </div>
+
+
+
+                     <div class="col-md-3 mb-3" id="EQ">
+                      <label>Equipment</label>
+                        <div class="col-sm-12">
+
+                         <select class="form-select" name="CD_Equipment" aria-label="Default select example" id="" >
+                            <option value='' selected>Equipment</option>
+                             {%if equipment_items %}
+                                {% for things in equipment_items %}
+                                    <option value="{{ things.TX_Equipment_Name }}">{{ things.TX_Equipment_Name }}</option>
+                                {% endfor %}
+                            {% endif %}
+                        </select>
+                      </div>
+                      </div>
+
+
+
+                     <div class="col-md-3 mb-3" id="ES">
+                      <label>Equipment Specification</label>
+                        <div class="col-sm-12">
+
+                         <select class="form-select" name="CD_Equipment_Specification" aria-label="Default select example" id="" >
+                            <option value='' selected>Equipment Specification</option>
+                             {%if equipment_specification_items %}
+                                {% for things in equipment_specification_items %}
+                                    <option value="{{ things.TX_Equipment_Specification_Name }}">{{ things.TX_Equipment_Specification_Name }}</option>
+                                {% endfor %}
+                            {% endif %}
+                        </select>
+                    </div>
+                    </div>
+
+
+
+                     <div class="col-md-3 mb-3" id="EQQ">
+                          <label>Equipment Qty</label>
+                          <input type="text" class="form-control" placeholder="Equipment Qty"  name="TX_Equipment_Qty "   onkeypress="return isNumberKey(event)">
+                     </div>
+
+
+
+                     <div class="col-md-3 mb-3" id="EU">
+                          <label>Equipment Unit</label>
+                          <input type="text" class="form-control" placeholder="Equipment Unit"  name="TX_Equipment_Unit " >
+                     </div>
+
+
+
+                      <div class="col-md-3 mb-3">
+                          <label>Remark</label>
+                          <input type="text" class="form-control" placeholder="Remark"  name="Remark ">
+                     </div>
+
+
+                    <div class="col-md-3 mb-3">
+                      <label>Attachment</label>
+                       <input class="form-control" name="FU_WV_Image" type="file" accept="image/png, image/gif, image/jpeg">
+                    </div>
+                    <input type="hidden" class="form-control" value=True name="Is_Active">
+                    <button class="btn btn-outline-primary" type="submit">Submit</button>
+
+                </div> <!--row -->
+            </form>
+      </div>
+    </div>
+            <div class="col-md-4">
+            <div class="form-inline my-2 my-lg-0">
+            {% csrf_token %}
+                <div class="form-floating mb-3">
+                  <p class="form-control mr-sm-2 card-text form-control" name="ID_WV_Main">{{ wv_main_item.CD_Site }}</p>
+                  <label style="color:red" for="floatingInput">Site Name</label>
+                </div>
+                <div class="form-floating mb-3">
+                  <p class="form-control mr-sm-2 card-text form-control" name="TX_Site_Supervisor">{{ wv_main_item.TX_Site_Supervisor }}</p>
+                  <label style="color:red" for="floatingInput">Site Supervisor</label>
+                </div>
+                <div class="form-floating mb-3">
+                  <p class="form-control mr-sm-2 card-text form-control" name="TX_Site_In_charge_Design">{{ wv_main_item.TX_Site_In_charge_Design }}</p>
+                  <label style="color:red" for="floatingInput">Site In Charge Design</label>
+                </div>
+                <div class="form-floating mb-3">
+                  <p class="form-control mr-sm-2 card-text form-control" name="TX_Site_In_charge_QS">{{ wv_main_item.TX_Site_In_charge_QS }}</p>
+                  <label style="color:red" for="floatingInput">Site In Charge QS</label>
+                </div>
+                <div class="form-floating mb-3">
+                  <p class="form-control mr-sm-2 card-text form-control" name="TX_Site_Manager">{{ wv_main_item.TX_Site_Manager }}</p>
+                  <label style="color:red" for="floatingInput">Site In Charge QS</label>
+                </div>
+                <div class="form-floating mb-3">
+                  <p class="form-control mr-sm-2 card-text form-control" name="TX_Construction_Manager">{{ wv_main_item.TX_Construction_Manager }}</p>
+                  <label style="color:red" for="floatingInput">Site Construction Manager</label>
+                </div>
+
+           <!-- <p class="form-control mr-sm-2"> type="search" placeholder="{{ wv_main_item.CD_Site }}" value="{{ wv_main_item.CD_Site }}"
+                   aria-label="Search" name="wv_main_item"> -->
+              <!--<input type="hidden" value="{{ wv_main_item.Is_Active }}" name="Is_Active">
+            <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">Edit </button>-->
+            </div>
+        </div>
+    </div>
+
+
+           <br>
+              <br>
+
+
+              {% if DR_Details_items %}
+                <table class="table table-striped secondary border" style="Color:#dcdcdc; line-height:1;">
+                   <thead>
+                   <!--<a href="#" class="btn btn-primary btn-xs pull-right"><b>+</b> Add new categories</a>-->
+                   <tr>
+                   <th><center>Site Name</center></th>
+                   <!--<th>Is_Active</th>-->
+                   <th class="text-center"><center>Activity</center></th>
+                   <th class="text-center"><center>Panel No Range</center></th>
+                   <th class="text-center"><center>Start</center></th>
+                   <th class="text-center"><center>End(Casting Concrete)</center></th>
+                   <th class="text-center"><center>Manpower Classification</center></th>
+                   <th class="text-center"><center>Designation</center></th>
+                   <th class="text-center"><center>Day/Night</center></th>
+                   <th class="text-center"><center>Designation Qty</center></th>
+                   <th class="text-center"><center>Equipment</center></th>
+                   <th class="text-center"><center>Equipment Spec;</center></th>
+                   <th class="text-center"><center>Equipment Qty</center></th>
+                   <th class="text-center"><center>Equipment Unit</center></th>
+                   <th class="text-center"><center>Remark</center></th>
+                   <th class="text-center"><center>Date</center></th>
+                   <th class="text-center"><center>Attachment</center></th>
+                   </tr>
+                   </thead>
+
+                  {% for things in DR_Details_items %}
+                    <tr style="Color:#dcdcdc;">
+                    <td>{{ things.ID_DR_Main }}</td>
+                    <td>{{ things.TX_Activity }}</td>
+                    <td>{{ things.TX_Panel_No_Range }}</td>
+                    <td>{{ things.Start_Date }}</td>
+                    <td>{{ things.End_Casting_Concrete }}</td>
+                    <td>{{ things.Manpower_Classification }}</td>
+                    <td>{{ things.TX_Designation }}</td>
+                    <td>{{ things.Day_Night }}</td>
+                    <td>{{ things.TX_Designation_No }}</td>
+                    <td>{{ things.CD_Equipment }}</td>
+                    <td>{{ things.CD_Equipment_Specification }}</td>
+                    <td>{{ things.TX_Equipment_Qty }}</td>
+                    <td>{{ things.TX_Equipment_Unit }}</td>
+                    <td>{{ things.Remark }}</td>
+                    <td>{{ things.created_date |date:'d M Y' }}</td>
+                    {% if things.FU_WV_Image %}
+                        <td><center><a href="/media/{{ things.FU_WV_Image }}">View</a></center></td>
+                    {% else %}
+                        <td><center>No Media</center></td>
+                    {% endif %}
+                    </tr>
+                    {% endfor %}
+                </table>
+                {% endif %}
+        </div>
+        </div>
+</body>
+</html>
+
+{% endblock %}

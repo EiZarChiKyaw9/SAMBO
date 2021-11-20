@@ -1,0 +1,154 @@
+
+{% extends 'base.html' %}
+
+{% block title %}To-Do-List{% endblock %}
+{% load static %}
+
+{% block content %}
+<title>LT Sambo - Site Information</title>
+<br><br>
+<div class="container">
+
+<div class="row">
+    <h3 class="panel-title">
+        <span class="english">Site Info Registration</span>
+    </h3>
+    {% if messages %}
+
+      {% for message in messages %}
+        <br>
+        <!-- alert box section start -->
+         <div class="alert alert-success alert-dismissible fade show" role="alert">
+            {{ message }}
+            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <!-- alert box section end -->
+       {% endfor %}
+
+    {% endif %}
+    <form class="col-md-4 col-md-offset-2" method="post">
+            {% csrf_token %}
+
+
+            <div class="form col-md-12 me-2 mb-3">
+
+
+                    {% if wv_main_item %}
+                    <div class="col-md-12 mb-3">
+                         <select class="form-select" name="CD_Site" aria-label="Default select example" required>
+                            <option value="{{ wv_main_item.CD_Site }}">{{ wv_main_item.CD_Site }}</option>
+                        </select>
+                    </div>
+                    {% else %}
+                    <div class="col-md-12 mb-3">
+                        <select class="form-select" name="CD_Site" aria-label="Default select example" required>
+                                <option selected>Select Site</option>
+                                 {%if site_items %}
+                                    {% for things in site_items %}
+                                        <option value="{{ things.ID_Site }}">{{ things.TX_Site_Name }}</option>
+                                    {% endfor %}
+                                {% endif %}
+                            </select>
+                        </div>
+                    {% endif %}
+
+
+
+
+            <input class="form-control col-md-6 me-2" type="input" placeholder="Site Supervisor" aria-label="Site Supervisor" name="TX_Site_Supervisor" value="{{wv_main_item.TX_Site_Supervisor}}"><br>
+            <input class="form-control col-md-6 me-2" type="input" placeholder="Site In_charge Design" aria-label="Site In_charge Design" name="TX_Site_In_charge_Design" value ="{{wv_main_item.TX_Site_In_charge_Design}}"><br>
+            <input class="form-control col-md-6 me-2" type="input" placeholder="Site In_charge QS" aria-label="Defect Name" name="TX_Site_In_charge_QS" value ="{{wv_main_item.TX_Site_In_charge_QS}}"><br>
+            <input class="form-control col-md-6 me-2" type="input" placeholder="Site Manager" aria-label="Site Manager" name="TX_Site_Manager" value ="{{wv_main_item.TX_Site_Manager}}"><br>
+            <input class="form-control col-md-6 me-2" type="input" placeholder="Construction Manager" aria-label="Construction Manager" name="TX_Construction_Manager" value ="{{wv_main_item.TX_Construction_Manager}}"><br>
+
+             {% if wv_main_item.Is_Active == False %}
+                    <div class="col-md-4 mb-3">
+                      <!--<label>Status</label>-->
+                      <div class="col-sm-12">
+
+                         <select class="form-select" name="Is_Active" aria-label="Default select example" required>
+                            <option value=True>Active</option>
+                             <option value=False selected>Inactive</option>
+                        </select>
+
+                    </div>
+                    </div>
+                {% else %}
+                    <div class="col-md-4 mb-3">
+                      <label>Status</label>
+                      <div class="col-sm-12">
+
+                         <select class="form-select" name="Is_Active" aria-label="Default select example" required>
+                            <option value=True selected>Active</option>
+                             <option value=False>Inactive</option>
+                        </select>
+
+                    </div>
+                    </div>
+                {% endif %}
+
+        {% if wv_main_item %}
+            <div class="d-grid gap-2">
+                <button class="btn btn-outline-primary mb-3" type="submit">Update</button>
+            </div>
+        {% else %}
+            <div class="d-grid gap-2">
+                <button class="btn btn-outline-primary mb-3" type="submit">Submit</button>
+            </div>
+        {% endif %}
+
+         <center><a class="dropdown-item secondary bg-primary" href="{% url 'site_info_create' %}">Cancel</a></center>
+            <div class="d-grid gap-2">
+            </div>
+        </div>
+    </form>
+    <br>
+
+
+    {%if wv_main_items %}
+    <div class="col-md-8 col-md-offset-2 primary md-2">
+
+    <table class="table table-striped secondary border" style="Color:#dcdcdc; line-height:1;">
+    <thead>
+    <!--<a href="#" class="btn btn-primary btn-xs pull-right"><b>+</b> Add new categories</a>-->
+        <tr>
+            <th><center>Site Name</center></th>
+            <th><center>Supervisor</center></th>
+            <th><center>In Charge Design</center></th>
+            <th><center>In Charge QS</center></th>
+            <th><center>Site Manager</center></th>
+            <th><center>Construction Manager</center></th>
+
+            <th><center>Status</center></th>
+            <th class="text-center"><center>Action</center></th>
+        </tr>
+    </thead>
+       {% for things in wv_main_items %}
+            <tr style="Color:#dcdcdc;">
+
+                <td><center>{{ things.CD_Site }} </center></td>
+                <td><center>{{ things.TX_Site_Supervisor }} </center></td>
+                <td><center>{{ things.TX_Site_In_charge_Design }} </center></td>
+                <td><center>{{ things.TX_Site_In_charge_QS }} </center></td>
+                <td><center>{{ things.TX_Site_Manager }} </center></td>
+                <td><center>{{ things.TX_Construction_Manager }} </center></td>
+                {% if things.Is_Active %}
+                    <td class="custom-control custom-checkbox" >
+                        <center><input type="checkbox" class="custom-control-input primary" disabled checked></center>
+                    </td>
+                {% else %}
+                    <td class="center custom-control custom-checkbox" >
+                      <center><input type="checkbox" class="custom-control-input primary" disabled></center>
+                    </td>
+                {% endif %}
+                <td class="text-center"><a class='btn btn-primary btn-xs' href="{% url 'edit_info' things.id %}"><span class="glyphicon glyphicon-edit"></span> Edit</a>
+
+            </tr>
+        {% endfor %}
+    </table>
+    </div>
+   {% endif %}
+</div>
+</div>
+
+{% endblock %}
